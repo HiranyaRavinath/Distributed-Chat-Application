@@ -7,15 +7,15 @@
 <?php
 if (isset($_POST['msgsend']) ){
 
-$RoomNo= $_POST['RoomNo'];
-$Type = $_POST['Type'];
+$Title= $_POST['Title'];
+$Price = $_POST['Price'];
 $Availability = true;
 
 
 
-$url = "$ipAndPort/api/Room"; 
+$url = "$ipAndPort/api/Food"; 
 echo  $url; 
-$con = array("RoomNo"=>"$RoomNo", "Type"=>"$Type", "Availability"=>"$Availability");
+$con = array("Title"=>"$Title", "Price"=>$Price, "Availability"=>"$Availability");
 $content=json_encode($con);
 $curl = curl_init($url);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -31,11 +31,11 @@ $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
 curl_close($curl);
 $response = json_decode($json_response, true);
-echo $response;
+
 if($response=="Added Successfully")
 {
 
-    header("Location: http://localhost/Distributed-Chat-Application-1/WebClient/viewrooms.php");
+    header("Location: http://localhost/Distributed-Chat-Application-1/WebClient/viewfood.php");
 }
 else{
     
@@ -44,6 +44,21 @@ else{
 }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?>
 
@@ -95,7 +110,7 @@ else{
             <div class="container">
                 <div class="signup-content">
                     <div class="signup-form">
-                        <h2 class="form-title">Add Rooms</h2>
+                        <h2 class="form-title">Add To Menu</h2>
                        
 
 
@@ -121,8 +136,8 @@ else{
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th>Room No</th>
-                                                        <th>Room Type</th>
+                                                        <th>Title</th>
+                                                        <th>Price</th>
                                                         <th></th>
                                                         
                                                         <th></th>
@@ -133,7 +148,9 @@ else{
                                                 <form method="POST" class="register-form" id="login-form">
                                                         <tr>
                                                             <td><div class="form-group">
-                                <input name="RoomNo" id="RoomNo"  required/>
+                                <input name="Title" id="Title"  required/>
+
+                                
                             </div>
                         
                         
@@ -141,11 +158,7 @@ else{
                         
                         </br></br></br></br></br></br></td>
                                                             <th>
-                                                            <select name="Type" id="Type">
-  <option value="AC">AC</option>
-  <option value="NonAC">NonAC</option>
- 
-</select>
+                                                            <input name="Price" id="Price"  required/>                    
 
 
 </th>

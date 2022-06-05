@@ -13,10 +13,11 @@ namespace WebApplication4.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoomController : ControllerBase
+    public class FoodController : ControllerBase
     {
+
         private readonly IConfiguration _configuration;
-        public RoomController(IConfiguration configuration)
+        public FoodController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -26,11 +27,11 @@ namespace WebApplication4.Controllers
         public JsonResult Get()
         {
             string query = @"
-                            SELECT [RoomId]
-      ,[RoomNo]
+                            SELECT [FoodId]
+      ,[Title]
       ,[Availability]
-      ,[Type]
-  FROM [dbo].[Room]
+      ,[Price]
+  FROM [dbo].[Food]
                             ";
 
             DataTable table = new DataTable();
@@ -52,14 +53,14 @@ namespace WebApplication4.Controllers
         }
 
         [HttpPost]
-        public JsonResult Post(Room rom)
+        public JsonResult Post(Food food)
         {
             string query = @"
-                           INSERT INTO [dbo].[Room]
-           ([RoomNo]
+                           INSERT INTO [dbo].[Food]
+           ([Title]
            ,[Availability]
-           ,[Type])
-                    values (@RoomNo,@Availability,@Type)
+           ,[Price])
+                    values (@Title,@Availability,@Price)
                             ";
 
             DataTable table = new DataTable();
@@ -70,9 +71,9 @@ namespace WebApplication4.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@RoomNo", rom.RoomNo);
-                    myCommand.Parameters.AddWithValue("@Availability", rom.Availability);
-                    myCommand.Parameters.AddWithValue("@Type", rom.Type);
+                    myCommand.Parameters.AddWithValue("@Title", food.Title);
+                    myCommand.Parameters.AddWithValue("@Availability", food.Availability);
+                    myCommand.Parameters.AddWithValue("@Price", food.Price);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -88,14 +89,14 @@ namespace WebApplication4.Controllers
 
 
         [HttpPut]
-        public JsonResult Put(Room rom)
+        public JsonResult Put(Food food)
         {
             string query = @"
-                           update dbo.[Room]
-                           set RoomNo= @RoomNo,
+                           update dbo.[Food]
+                           set FoodId= @FoodId,
                             Availability=@Availability,
-                            Type=@Type,
-                            Where RoomNo=@RoomNo
+                            Price=@Price,
+                            Where FoodId=@FoodId
                             ";
 
             DataTable table = new DataTable();
@@ -106,9 +107,9 @@ namespace WebApplication4.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@RoomNo", rom.RoomNo);
-                    myCommand.Parameters.AddWithValue("@Availability", rom.Availability);
-                    myCommand.Parameters.AddWithValue("@Type", rom.Type);
+                    myCommand.Parameters.AddWithValue("@FoodId", food.FoodId);
+                    myCommand.Parameters.AddWithValue("@Availability", food.Availability);
+                    myCommand.Parameters.AddWithValue("@Price", food.Price);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -125,20 +126,12 @@ namespace WebApplication4.Controllers
 
 
 
-
-
-
-
-
-
-
-
-        [HttpDelete("{RoomNo}")]
-        public JsonResult Delete(int RoomNo)
+        [HttpDelete("{FoodId}")]
+        public JsonResult Delete(int FoodId)
         {
             string query = @"
-                           delete from dbo.[Room]
-                            where RoomNo=@RoomNo
+                           delete from dbo.[Food]
+                            where FoodId=@FoodId
                             ";
 
             DataTable table = new DataTable();
@@ -149,7 +142,7 @@ namespace WebApplication4.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@RoomNo", RoomNo);
+                    myCommand.Parameters.AddWithValue("@FoodId", FoodId);
 
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -160,6 +153,30 @@ namespace WebApplication4.Controllers
 
             return new JsonResult("Deleted Successfully");
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }
